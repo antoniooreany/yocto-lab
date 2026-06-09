@@ -2,7 +2,12 @@
 
 A small learning sandbox for Yocto/BitBake, created to understand the fundamentals of custom layers, recipes, and build configuration.
 
-This repository serves as a companion project to [embedded-ci-lab](https://github.com/antoniooreany/embedded-ci-lab), where the focus is on robust CI tooling. Here, the focus is on the Yocto/BitBake metadata domain.
+## Relationship to embedded-ci-lab
+This repository is a domain-learning companion to [embedded-ci-lab](https://github.com/antoniooreany/embedded-ci-lab).
+- **yocto-lab**: Focuses on Yocto/BitBake metadata (layers, recipes, and configs).
+- **embedded-ci-lab**: Focuses on Python-based CI automation, resource guarding, and reporting.
+
+Concepts learned here (such as metadata structure and configuration) provide the foundation for automated validation and inspection tasks implemented in [embedded-ci-lab].
 
 ## What this repo contains
 - **Minimal Layer Structure:** A clean directory layout demonstrating a custom layer (`meta-example`).
