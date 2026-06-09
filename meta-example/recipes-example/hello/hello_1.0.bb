@@ -10,3 +10,5 @@ do_install() {
     install -d ${D}${bindir}
     install -m 0755 ${WORKDIR}/hello.sh ${D}${bindir}/hello
 }
+
+FILES:${PN} = "${bindir}/hello"
