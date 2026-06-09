@@ -21,9 +21,13 @@ While this is not a CI project, this layer/recipe sandbox could be validated in 
 - `kas` (or shell-based checks): To automate structural validation.
 
 ## Commands explored
-- Environment setup basics.
-- `bitbake-layers` usage.
-- Simple recipe build simulation.
+### Already run
+- `bitbake-layers show-layers`: To verify the layer is correctly parsed.
+- `python3 tools/check_layer.py`: Locally validate the expected directory structure (lightweight check).
+
+### Planned
+- `bitbake -p`: To check for parsing errors.
+- `bitbake hello`: To build the recipe.
 
 ## License
 MIT
