@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-06-10
+
+### Changed
+- **Professional Naming Refactor:**
+    - Renamed `meta-example` to `meta-yocto-lab`.
+    - Renamed `recipes-example` to `recipes-apps` (Application Layer focus).
+    - Renamed `conf-examples` to `samples`.
+- **Infrastructure Updates:**
+    - Updated `layer.conf` with new collection name (`yocto-lab`) and priority.
+    - Updated `tools/check_layer.py` validation logic for the new structure.
+    - Fixed `samples/bblayers.conf` to point to the correct layer path.
+- **Documentation:** Updated README.md to reflect the professional architectural changes.
+
 ## [0.2.0] - 2026-06-10
 
 ### Added
