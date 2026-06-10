@@ -1,4 +1,7 @@
 # yocto-lab
+![Metadata Validation](https://github.com/antoniooreany/yocto-lab/actions/workflows/validate.yml/badge.svg)
+![Python Version](https://img.shields.io/badge/python-3.10-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
 
 A small learning sandbox for Yocto/BitBake, created to understand the fundamentals of custom layers, recipes, and build configuration.
 
@@ -10,13 +13,13 @@ This repository is a domain-learning companion to [embedded-ci-lab](https://gith
 Concepts learned here (such as metadata structure and configuration) provide the foundation for automated validation and inspection tasks implemented in [embedded-ci-lab].
 
 ## What this repo contains
-- **Minimal Layer Structure:** A clean directory layout demonstrating a custom layer (`meta-example`).
-- **Hello World Recipe:** A simple `hello_1.0.bb` recipe showing basic metadata and file installation.
-- **Config Examples:** Sample `bblayers.conf` and `local.conf` files for learning.
-- **Validation Tool:** A tiny Python script (`tools/check_layer.py`) to validate the expected directory structure.
+- **Professional Layer Structure:** A clean directory layout demonstrating a custom layer (`meta-yocto-lab`).
+- **Hello World Recipe:** A simple `hello_1.0.bb` recipe within `recipes-apps` showing basic metadata and file installation.
+- **Config Samples:** Provided `samples/` directory with `bblayers.conf` and `local.conf` for quick environment setup.
+- **Validation Tool:** A tiny Python script (`tools/check_layer.py`) to validate the expected professional directory structure.
 
 ## What is this repo (and what it isn't)
-- **It is:** An educational playground for Yocto metadata and an educational template for beginners.
+- **It is:** An educational playground for Yocto metadata and an architectural template for beginners.
 - **It is NOT:** A full Yocto distribution, a production-ready layer, or a CI system.
 
 ## CI Integration Ideas
