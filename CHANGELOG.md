@@ -2,8 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [0.3.1] - 2026-06-10
+
+### Changed
+- **Major Documentation Refactor:**
+    - Consolidated all ecosystem integration narratives into a single, cohesive README.
+    - Synchronized documentation style and structure with the `embedded-ci-lab` repository.
+    - Added a clickable Table of Contents and "Project Scope" section.
+    - Expanded "Running the Integration Demo" guide with multi-platform (Bash/PowerShell) support.
+    - Integrated "Integration Concept" ASCII diagram to visualize project synergy.
+- **Project Positioning:** Refined "Portfolio Highlights" and "Motivation" sections to better target automotive/embedded CI roles.
 
 ## [0.3.0] - 2026-06-10
 
