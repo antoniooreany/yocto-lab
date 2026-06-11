@@ -11,6 +11,7 @@
 - [Yocto/BitBake Integration Ecosystem](#yoctobitbake-integration-ecosystem)
 - [Portfolio Highlights](#portfolio-highlights)
 - [Motivation](#motivation)
+- [Project Scope](#project-scope)
 - [Features](#features)
 - [Getting Started](#getting-started)
 - [Usage](#usage)
@@ -62,6 +63,15 @@ It demonstrates the ability to not only build CI tools but also to deeply unders
 
 Modern embedded/automotive development (e.g., at BMW) relies on hundreds of layers and thousands of recipes. Understanding how to structure, version, and validate this metadata is critical. `yocto-lab` was created to explore these patterns in a controlled, minimalist environment.
 
+## Project Scope
+
+To maintain clarity during technical discussions, it is important to distinguish what this repository represents:
+
+- **It is**: An educational playground for Yocto metadata and an architectural template for beginners.
+- **It is**: A proof-of-contact project for understanding layers, recipes, and configs.
+- **It is NOT**: A full Yocto distribution or a production-ready OS layer.
+- **It is NOT**: A standalone CI system (see [embedded-ci-lab] for that).
+
 ## Features
 
 - **Professional Layer Structure**: Follows Yocto standards with `meta-yocto-lab`.
@@ -101,7 +111,12 @@ Practical commands explored in this sandbox:
 
 ## Integration Concept
 
-`yocto-lab` acts as the **Target Metadata** while `embedded-ci-lab` acts as the **CI Orchestrator**:
+`yocto-lab` acts as the **Target Metadata** while `embedded-ci-lab` acts as the **CI Orchestrator**. 
+
+Beyond structural checks, this metadata can be validated in CI environments using domain-specific tools:
+- **`bitbake -p`**: To verify configuration and recipe parsing logic.
+- **`bitbake-layers show-layers`**: To confirm correct layer priority and inclusion.
+- **`kas`**: For automated, containerized build configuration validation.
 
 ```text
 embedded-ci-lab (Orchestrator)
