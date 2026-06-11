@@ -5,6 +5,51 @@
 
 A small learning sandbox for Yocto/BitBake, created to understand the fundamentals of custom layers, recipes, and build configuration.
 
+## Table of Contents
+- [Yocto/BitBake Integration Ecosystem](#yoctobitbake-integration-ecosystem)
+- [Relationship to embedded-ci-lab](#relationship-to-embedded-ci-lab)
+- [What this repo contains](#what-this-repo-contains)
+- [What is this repo (and what it isn't)](#what-is-this-repo-and-what-it-isnt)
+- [CI Integration Ideas](#ci-integration-ideas)
+- [Commands explored](#commands-explored)
+- [License](#license)
+
+## Yocto/BitBake Integration Ecosystem
+**Engineering Note:** To demonstrate how [embedded-ci-lab](https://github.com/antoniooreany/embedded-ci-lab) manages real-world build metadata, I developed this companion repository, **yocto-lab**, which serves as a hands-on learning sandbox for Yocto/BitBake.
+
+This ecosystem highlights my experience with both CI/CD tooling and build system internals:
+- **embedded-ci-lab**: Python-based framework for reliable CI automation, observability, and resource-aware execution.
+- **yocto-lab (this repo)**: Proof-of-contact with BitBake/Yocto metadata, featuring a professional layer structure, recipes, and build configurations.
+
+**Integration:** `embedded-ci-lab` uses the `yocto_validate_artifacts` step to perform automated "Sanity Checks" on Yocto metadata. While `yocto-lab` is provided as a hands-on learning sandbox, this framework is fully environment-agnostic. You can validate any Yocto-compatible directory structure anywhere on your file system by configuring the `artifacts_root` in your pipeline definition, or by using environment variables (e.g., `${ARTIFACTS_ROOT}`) for maximum portability across different CI/CD environments (mirroring professional gate-checks like those in Zuul CI).
+
+### Workflow Setup (for yocto-lab demo)
+For integration tests and demos, ensure `yocto-lab` is cloned in the same parent directory:
+```text
+/projects/
+├── embedded-ci-lab/
+└── yocto-lab/
+```
+
+### Running the Integration Demo
+By default, the demo expects `yocto-lab` to be in the parent directory. You can override this using the `ARTIFACTS_ROOT` environment variable:
+
+**Option 1: Use the default (../yocto-lab)**
+```bash
+embedded-ci run --pipeline pipelines/yocto_lab_integration_demo.yaml
+```
+
+**Option 2: Override with custom path**
+- **On Linux/macOS (Bash):**
+  ```bash
+  ARTIFACTS_ROOT=/custom/path/to/artefacts embedded-ci run --pipeline pipelines/yocto_lab_integration_demo.yaml
+  ```
+- **On Windows (PowerShell):**
+  ```powershell
+  $env:ARTIFACTS_ROOT="/custom/path/to/artefacts"; embedded-ci run --pipeline pipelines/yocto_lab_integration_demo.yaml
+  ```
+This flexibility is achieved using Bash-style variable expansion (`${ARTIFACTS_ROOT:-../yocto-lab}`) supported natively by the `embedded-ci-lab` pipeline loader.
+
 ## Relationship to embedded-ci-lab
 This repository is a domain-learning companion to [embedded-ci-lab](https://github.com/antoniooreany/embedded-ci-lab).
 - **yocto-lab**: Focuses on Yocto/BitBake metadata (layers, recipes, and configs).
