@@ -1,41 +1,147 @@
 # yocto-lab
+
 ![Metadata Validation](https://github.com/antoniooreany/yocto-lab/actions/workflows/validate.yml/badge.svg)
 ![Python Version](https://img.shields.io/badge/python-3.10-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-A small learning sandbox for Yocto/BitBake, created to understand the fundamentals of custom layers, recipes, and build configuration.
+`yocto-lab` is a small learning sandbox designed to master the fundamentals of Yocto/BitBake metadata architecture, custom layers, and build configurations.
 
-## Relationship to embedded-ci-lab
-This repository is a domain-learning companion to [embedded-ci-lab](https://github.com/antoniooreany/embedded-ci-lab).
-- **yocto-lab**: Focuses on Yocto/BitBake metadata (layers, recipes, and configs).
-- **embedded-ci-lab**: Focuses on Python-based CI automation, resource guarding, and reporting.
+## Table of Contents
 
-Concepts learned here (such as metadata structure and configuration) provide the foundation for automated validation and inspection tasks implemented in [embedded-ci-lab].
+- [Yocto/BitBake Integration Ecosystem](#yoctobitbake-integration-ecosystem)
+- [Portfolio Highlights](#portfolio-highlights)
+- [Motivation](#motivation)
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Usage](#usage)
+- [Integration Concept](#integration-concept)
+- [Engineering Decisions](#engineering-decisions)
+- [Project structure](#project-structure)
 
-## What this repo contains
-- **Professional Layer Structure:** A clean directory layout demonstrating a custom layer (`meta-yocto-lab`).
-- **Hello World Recipe:** A simple `hello_1.0.bb` recipe within `recipes-apps` showing basic metadata and file installation.
-- **Config Samples:** Provided `samples/` directory with `bblayers.conf` and `local.conf` for quick environment setup.
-- **Validation Tool:** A tiny Python script (`tools/check_layer.py`) to validate the expected professional directory structure.
+## Yocto/BitBake Integration Ecosystem
 
-## What is this repo (and what it isn't)
-- **It is:** An educational playground for Yocto metadata and an architectural template for beginners.
-- **It is NOT:** A full Yocto distribution, a production-ready layer, or a CI system.
+> **Engineering Note:** To demonstrate how [embedded-ci-lab](https://github.com/antoniooreany/embedded-ci-lab) manages real-world build metadata, I developed this companion repository, `yocto-lab`, which serves as a hands-on domain-learning sandbox.
 
-## CI Integration Ideas
-While this is not a CI project, this layer/recipe sandbox could be validated in a CI environment using:
-- `bitbake -p`: To parse the configuration and recipes.
-- `bitbake-layers show-layers`: To verify layer inclusion.
-- `kas` (or shell-based checks): To automate structural validation.
+This ecosystem highlights my experience with both CI/CD tooling and build system internals:
 
-## Commands explored
-### Already run
-- `bitbake-layers show-layers`: To verify the layer is correctly parsed.
-- `python3 tools/check_layer.py`: Locally validate the expected directory structure (lightweight check).
+- **`embedded-ci-lab`**: Python-based framework for reliable CI automation, observability, and resource-aware execution.
+- **`yocto-lab`** (this repo): Proof-of-contact with BitBake/Yocto metadata, featuring a professional layer structure, recipes, and build configurations.
 
-### Planned
-- `bitbake -p`: To check for parsing errors.
-- `bitbake hello`: To build the recipe.
+**Integration**: `embedded-ci-lab` uses the `yocto_validate_artifacts` step to perform automated "Sanity Checks" on Yocto metadata. While `yocto-lab` is provided as a learning sandbox, the integration framework is fully environment-agnostic. You can validate any Yocto-compatible directory structure by configuring the `artifacts_root` in your pipeline definition or via environment variables (e.g., `${ARTIFACTS_ROOT}`).
 
-## License
-MIT
+### Workflow Setup (for yocto-lab demo)
+For integration tests and demos, ensure `yocto-lab` is cloned in the same parent directory:
+```text
+/projects/
+├── embedded-ci-lab/
+└── yocto-lab/
+```
+
+### Running the Integration Demo
+By default, the demo expects `yocto-lab` to be in the parent directory. You can override this using the `ARTIFACTS_ROOT` environment variable:
+
+```bash
+# From embedded-ci-lab directory:
+embedded-ci run --pipeline pipelines/yocto_lab_integration_demo.yaml
+```
+
+## Portfolio Highlights
+
+This project serves as a domain-specific extension to my CI/CD portfolio, focusing on the complex metadata structures typical of embedded Linux environments.
+
+### Why this project matters
+It demonstrates the ability to not only build CI tools but also to deeply understand the **domain metadata** (Yocto/BitBake) that these tools are designed to serve.
+
+### Skills demonstrated
+- **Yocto Architecture**: Mastering layers, recipes, and configuration file hierarchy.
+- **Metadata as Code**: Applying professional naming conventions and directory structures (`meta-yocto-lab`, `recipes-apps`).
+- **Tooling Integration**: Creating Python-based inspection tools (`check_layer.py`) to bridge the gap between build systems and CI runners.
+- **Quality Assurance**: Automated validation via GitHub Actions.
+
+## Motivation
+
+Modern embedded/automotive development (e.g., at BMW) relies on hundreds of layers and thousands of recipes. Understanding how to structure, version, and validate this metadata is critical. `yocto-lab` was created to explore these patterns in a controlled, minimalist environment.
+
+## Features
+
+- **Professional Layer Structure**: Follows Yocto standards with `meta-yocto-lab`.
+- **Application-Layer Focused Recipes**: Organized under `recipes-apps`.
+- **Versioned Metadata**: Demonstrates standard naming (`hello_1.0.bb`).
+- **Sample Configurations**: Pre-configured `samples/` for `local.conf` and `bblayers.conf`.
+- **Automated Validation**: 
+  - Local Python-based structure checker (`tools/check_layer.py`).
+  - GitHub Actions CI for immediate feedback.
+- **Project Hygiene**: MIT Licensed, Yocto-specific `.gitignore`, and detailed `CHANGELOG.md`.
+
+## Getting Started
+
+### Prerequisites
+- Python 3.10+
+- Basic understanding of BitBake (optional)
+
+### Installation
+```bash
+git clone https://github.com/antoniooreany/yocto-lab.git
+cd yocto-lab
+```
+
+## Usage
+
+### Local Validation
+Run the lightweight Python inspector to verify the layer structure:
+```bash
+python3 tools/check_layer.py
+```
+
+### Exploring Commands
+Practical commands explored in this sandbox:
+- `bitbake-layers show-layers`: Verify layer parsing.
+- `bitbake -p`: (Planned) Simulate full parsing checks.
+- `bitbake hello`: (Planned) Simulate individual recipe builds.
+
+## Integration Concept
+
+`yocto-lab` acts as the **Target Metadata** while `embedded-ci-lab` acts as the **CI Orchestrator**:
+
+```text
+embedded-ci-lab (Orchestrator)
+      |
+      v
+[Metadata Inspection] <--- [tools/check_layer.py]
+      |                          |
+      v                          v
+[yocto-lab] (Target) <--- [Professional Metadata]
+      |                          |
+      v                          v
+Pass/Fail Status + PR Gating (GitHub Actions)
+```
+
+## Engineering Decisions
+
+- **Naming Conventions**: Transitioned from `meta-example` to `meta-yocto-lab` to mirror industry-standard naming (like `meta-intel` or `meta-bmw`).
+- **Semantic Versioning**: Strict adherence to SemVer and [Keep a Changelog](https://keepachangelog.com/) for project history.
+- **Minimalism**: Intentionally kept small to focus on structural integrity rather than build times.
+
+## Project structure
+
+```text
+yocto-lab/
+├── .github/workflows/validate.yml
+├── CHANGELOG.md
+├── LICENSE
+├── README.md
+├── .gitignore
+├── meta-yocto-lab/
+│   ├── conf/
+│   │   └── layer.conf
+│   └── recipes-apps/
+│       └── hello/
+│           ├── files/
+│           │   └── hello.sh
+│           └── hello_1.0.bb
+├── samples/
+│   ├── bblayers.conf
+│   └── local.conf
+└── tools/
+    └── check_layer.py
+```
