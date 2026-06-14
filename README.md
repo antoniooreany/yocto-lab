@@ -15,6 +15,7 @@ License
 - [Features](#features)
 - [Getting Started](#getting-started)
 - [Usage](#usage)
+- [Real-world Yocto Build & Deployment](#real-world-yocto-build--deployment)
 - [Integration Concept](#integration-concept)
 - [Engineering Decisions](#engineering-decisions)
 - [Project structure](#project-structure)
@@ -25,8 +26,8 @@ License
 
 This ecosystem highlights my experience with both CI/CD tooling and build system internals:
 
-- `**embedded-ci-lab`**: Python-based framework for reliable CI automation, observability, and resource-aware execution.
-- `**yocto-lab**` (this repo): Proof-of-contact with BitBake/Yocto metadata, featuring a professional layer structure, recipes, and build configurations.
+- **embedded-ci-lab**: Python-based framework for reliable CI automation, observability, and resource-aware execution.
+- **yocto-lab** (this repo): Proof-of-contact with BitBake/Yocto metadata, featuring a professional layer structure, recipes, and build configurations.
 
 **Integration**: `embedded-ci-lab` uses the `yocto_validate_artifacts` step to perform automated "Sanity Checks" on Yocto metadata. While `yocto-lab` is provided as a learning sandbox, the integration framework is fully environment-agnostic. You can validate any Yocto-compatible directory structure by configuring the `artifacts_root` in your pipeline definition or via environment variables (e.g., `${ARTIFACTS_ROOT}`).
 
@@ -130,15 +131,58 @@ Practical commands explored in this sandbox:
 - `bitbake -p`: (Planned) Simulate full parsing checks.
 - `bitbake hello`: (Planned) Simulate individual recipe builds.
 
+## Real-world Yocto Build & Deployment
+
+While this repository is a standalone metadata sandbox, it is designed to be integrated into a standard Yocto build environment (Poky) to produce a functional Linux distribution.
+
+### Build Process
+
+1.  **Initialize Environment**: Within your Poky directory, set up the build environment:
+    ```bash
+    source oe-init-build-env
+    ```
+2.  **Add meta-yocto-lab**: Register this layer with the BitBake build system:
+    ```bash
+    bitbake-layers add-layer path/to/yocto-lab/meta-yocto-lab
+    ```
+3.  **Inject Custom Recipe**: Append the `hello` package to your image by adding this line to `conf/local.conf`:
+    ```bitbake
+    IMAGE_INSTALL:append = " hello"
+    ```
+4.  **Execute Build**: Run the compilation process:
+    ```bash
+    bitbake core-image-minimal
+    ```
+
+### Deployment & Verification (QEMU)
+
+To verify the successful integration of our custom metadata, boot the resulting image in the **QEMU** emulator:
+
+1.  **Launch Emulator**:
+    ```bash
+    runqemu qemux86-64 nographic
+    ```
+2.  **System Access**: Log in as `root` (no password required).
+3.  **Verify Customization**: Execute the custom command provided by our `hello_1.0.bb` recipe:
+    ```bash
+    hello
+    ```
+4.  **Expected Output**:
+    ```text
+    Hello, Yocto World!
+    ```
+
+*This test confirms the entire lifecycle: from professional metadata architecture to a working executable within a custom-built Linux system.*
+
 ## Integration Concept
 
 `yocto-lab` acts as the **Target Metadata** while `embedded-ci-lab` acts as the **CI Orchestrator**. 
 
 Beyond structural checks, this metadata can be validated in CI environments using domain-specific tools:
 
-- `**bitbake -p`**: To verify configuration and recipe parsing logic.
-- `**bitbake-layers show-layers**`: To confirm correct layer priority and inclusion.
-- `**kas**`: For automated, containerized build configuration validation.
+- **bitbake -p**: To verify configuration and recipe parsing logic.
+- **bitbake-layers show-layers**: To confirm correct layer priority and inclusion.
+- **kas**: For automated, containerized build configuration validation.
 
 ```text
 embedded-ci-lab (Orchestrator)
