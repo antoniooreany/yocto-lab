@@ -19,6 +19,7 @@
 - [Integration Concept](#integration-concept)
 - [Engineering Decisions](#engineering-decisions)
 - [Project structure](#project-structure)
+- [Future Work](#future-work)
 
 ## Yocto/BitBake Integration Ecosystem
 
@@ -223,3 +224,19 @@ yocto-lab/
 └── tools/
     └── check_layer.py
 ```
+
+## Future Work
+
+We aim to evolve `yocto-lab` into a more comprehensive domain-learning platform. Planned improvements include:
+
+### 1. Advanced Metadata
+- **Complex Layer Integration**: Integrate `meta-security` or `meta-virtualization` to explore cross-layer dependencies and security-hardened configurations.
+- **Hardware Platform Support**: Extend configuration samples to include real-world boards (e.g., Raspberry Pi 4) beyond the QEMU emulator.
+
+### 2. Automation & Compliance
+- **SDK Automation**: Implement CI steps to automatically generate and validate extensible SDKs (eSDK) for developer onboarding.
+- **Compliance & SBOM**: Add automated SPDX/CycloneDX generation to demonstrate software supply chain transparency for embedded Linux.
+
+### 3. CI Optimization
+- **Environment Automation**: Transition environment setup to `kas` to provide a more standardized and reproducible build entry point.
+- **Multi-distro Validation**: Test metadata compatibility across different Yocto LTS releases (e.g., Kirkstone vs. Scarthgap) within the CI pipeline.
