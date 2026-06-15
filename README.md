@@ -143,6 +143,8 @@ To run a fully automated validation and build cycle using the companion CI frame
 ARTIFACTS_ROOT=~/path/to/yocto-lab embedded-ci run --pipeline pipelines/full-yocto-integration.yaml
 ```
 
+> **Engineering Note:** For a deeper dive into how this process is orchestrated, including **Dry-run testing, real-time log monitoring, and detailed infrastructure troubleshooting**, please refer to the [Real-world Yocto Build Guide](https://github.com/antoniooreany/embedded-ci-lab#real-world-yocto-build-guide) in the **embedded-ci-lab** repository.
+
 ### Option 2: Manual Build & Deployment
 1.  **Initialize Environment**: Within your Poky directory:
     ```bash
