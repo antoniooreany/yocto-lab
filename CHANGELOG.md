@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2026-06-12
+
+### Added
+- **Future Work Roadmap:** Outlined strategic plans for advanced metadata, automation compliance (SBOM/SDK), and CI optimizations.
+- **Ecosystem Cross-linking:** Added detailed "Engineering Notes" linking to the expanded build guide in the companion `embedded-ci-lab` repository.
+
+### Changed
+- **Documentation Polish:** Final synchronization of documentation style and technical guidance across the portfolio ecosystem.
+
 ## [0.3.2] - 2026-06-10
 
 ### Fixed
