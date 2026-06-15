@@ -14,12 +14,14 @@
 - [Project Scope](#project-scope)
 - [Features](#features)
 - [Getting Started](#getting-started)
-- [Usage](#usage)
-- [Real-world Yocto Build Guide](#real-world-yocto-build-guide)
+- [Usage & Integration Guide](#usage--integration-guide)
+  - [Local Validation (Quick Start)](#local-validation-quick-start)
+  - [Real-world Yocto Build Guide](#real-world-yocto-build-guide)
 - [Integration Concept](#integration-concept)
 - [Engineering Decisions](#engineering-decisions)
 - [Project structure](#project-structure)
 - [Future Work](#future-work)
+- [License](#license)
 
 ## Yocto/BitBake Integration Ecosystem
 
@@ -106,25 +108,18 @@ git clone https://github.com/antoniooreany/yocto-lab.git
 cd yocto-lab
 ```
 
-## Usage
+## Usage & Integration Guide
 
-### Local Validation
+### Local Validation (Quick Start)
 Run the lightweight Python inspector to verify the layer structure:
 ```bash
 python3 tools/check_layer.py
 ```
 
-### Exploring Commands
-Practical commands explored in this sandbox:
-- `bitbake-layers show-layers`: Verify layer parsing.
-- `bitbake -p`: (Planned) Simulate full parsing checks.
-- `bitbake hello`: (Planned) Simulate individual recipe builds.
-
-## Real-world Yocto Build Guide
-
+### Real-world Yocto Build Guide
 While the default integration scenarios use mocked artifacts for portability, you can use this metadata to orchestrate real Yocto builds and verify them in an emulator.
 
-### Prerequisites & Environment
+#### Prerequisites & Environment
 Ensure your host system (e.g., Ubuntu 22.04 on WSL2) has the required Yocto build dependencies:
 ```bash
 sudo apt update && sudo apt install gawk wget git diffstat unzip texinfo gcc build-essential chrpath socat cpio python3 python3-pip python3-pexpect xz-utils debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev pylint xterm python3-subunit mesa-common-dev zstd liblz4-tool -y
@@ -132,11 +127,11 @@ sudo apt update && sudo apt install gawk wget git diffstat unzip texinfo gcc bui
 
 > **Important Note on Performance:** Always perform BitBake build operations within your native Linux filesystem (e.g., `~/yocto-work/...`). Building on Windows-mounted directories (`/mnt/c/`) will lead to severe performance degradation and permission errors.
 
-### Infrastructure Recommendations
+#### Infrastructure Recommendations
 - **Storage**: Minimum 100GB of free space. To minimize disk usage, we recommend adding `INHERIT += "rm_work"` to your `local.conf`.
 - **RAM**: Minimum 16GB (32GB recommended for high-performance parallel builds).
 
-### Option 1: Automated Orchestration (via [embedded-ci-lab])
+#### Automated Orchestration (via [embedded-ci-lab])
 To run a fully automated validation and build cycle using the companion CI framework:
 ```bash
 # From the embedded-ci-lab directory
@@ -145,7 +140,7 @@ ARTIFACTS_ROOT=~/path/to/yocto-lab embedded-ci run --pipeline pipelines/full-yoc
 
 > **Engineering Note:** For a deeper dive into how this process is orchestrated, including **Dry-run testing, real-time log monitoring, and detailed infrastructure troubleshooting**, please refer to the [Real-world Yocto Build Guide](https://github.com/antoniooreany/embedded-ci-lab#real-world-yocto-build-guide) in the **embedded-ci-lab** repository.
 
-### Option 2: Manual Build & Deployment
+#### Manual Build & Deployment
 1.  **Initialize Environment**: Within your Poky directory:
     ```bash
     source oe-init-build-env
@@ -170,7 +165,7 @@ ARTIFACTS_ROOT=~/path/to/yocto-lab embedded-ci run --pipeline pipelines/full-yoc
     # Expected output: Hello, Yocto World!
     ```
 
-### Testing & Troubleshooting
+#### Testing & Troubleshooting
 To verify your setup without waiting for a full build:
 - **Dry-run**: Use `bitbake -n core-image-minimal`. The `-n` flag simulates execution, allowing you to verify parsing and metadata integrity in seconds.
 - **Duration**: The first build will take significant time as it compiles the entire toolchain. Keep the laptop plugged in.
@@ -242,3 +237,6 @@ We aim to evolve `yocto-lab` into a more comprehensive domain-learning platform.
 ### 3. CI Optimization
 - **Environment Automation**: Transition environment setup to `kas` to provide a more standardized and reproducible build entry point.
 - **Multi-distro Validation**: Test metadata compatibility across different Yocto LTS releases (e.g., Kirkstone vs. Scarthgap) within the CI pipeline.
+
+## License
+MIT
