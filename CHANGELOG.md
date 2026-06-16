@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.1] - 2026-06-15
+
+### Fixed
+- **Dependency Management:** Added `LAYERDEPENDS_yocto-lab = "core"` to `meta-yocto-lab/conf/layer.conf` to explicitly define layer dependencies according to Yocto best practices.
+- **Documentation Polish:** Finalized README structure with "Usage & Integration Guide", including multi-platform (Bash/PowerShell) demo instructions, and streamlined the overall navigation.
+
 ## [0.4.0] - 2026-06-12
 
 ### Added
