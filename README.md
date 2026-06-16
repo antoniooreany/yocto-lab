@@ -75,7 +75,7 @@ Practical commands explored in this sandbox:
 `yocto-lab` acts as the **Target Metadata** while `embedded-ci-lab` acts as the **CI Orchestrator**. 
 
 ### Real-world Orchestration & Build Guide
-For detailed instructions on how to use `embedded-ci-lab` to automate these Yocto builds, including **troubleshooting, infrastructure setup, and automated CI gating (Zuul-style)**, please refer to the [Real-world Yocto Build Guide](https://github.com/antoniooreany/embedded-ci-lab#real-world-yocto-build-guide) in the **embedded-ci-lab** repository.
+For detailed instructions on how to use `embedded-ci-lab` to automate these Yocto builds, including **troubleshooting, infrastructure setup, and automated CI gating (Zuul-style)**, please refer to the [Yocto/BitBake Integration](https://github.com/antoniooreany/embedded-ci-lab#yoctobitbake-integration) section in the **embedded-ci-lab** repository.
 
 ```text
 embedded-ci-lab (Orchestrator)
