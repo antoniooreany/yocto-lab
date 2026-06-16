@@ -14,8 +14,6 @@
 - [Getting Started](#getting-started)
 - [Usage](#usage)
 - [Yocto/BitBake Integration](#yoctobitbake-integration)
-  - [Integration Scenarios (Demos)](#integration-scenarios-demos)
-  - [Real-world Yocto Build Guide](#real-world-yocto-build-guide)
 - [Project structure](#project-structure)
 - [Engineering Decisions](#engineering-decisions)
 - [Future Work](#future-work)
@@ -30,7 +28,7 @@ This ecosystem highlights my experience with both CI/CD tooling and build system
 - **embedded-ci-lab**: Python-based framework for reliable CI automation, observability, and resource-aware execution.
 - **yocto-lab** (this repo): Proof-of-contact with BitBake/Yocto metadata, featuring a professional layer structure, recipes, and build configurations.
 
-**Integration**: `embedded-ci-lab` uses the `yocto_validate_artifacts` step to perform automated "Sanity Checks" on Yocto metadata. While `yocto-lab` is provided as a learning sandbox, the integration framework is fully environment-agnostic. You can validate any Yocto-compatible directory structure by configuring the `artifacts_root` in your pipeline definition or via environment variables (e.g., `${ARTIFACTS_ROOT}`).
+**Integration**: `embedded-ci-lab` uses the `yocto_validate_artifacts` step to perform automated "Sanity Checks" on Yocto metadata. While `yocto-lab` is provided as a learning sandbox, the integration framework is fully environment-agnostic.
 
 ## Portfolio Highlights
 
@@ -67,15 +65,12 @@ Modern embedded/automotive development (e.g., at BMW) relies on hundreds of laye
 
 ### Installation
 ```bash
-mkdir -p ~/yocto-work && cd ~/yocto-work
 git clone https://github.com/antoniooreany/yocto-lab.git
 cd yocto-lab
 ```
 
 ## Usage
 
-<!-- ### Local Validation {#local-validation} -->
-<!-- <a name="local-validation"></a> -->
 ### Local Validation
 Run the lightweight Python inspector to verify the layer structure:
 ```bash
@@ -83,115 +78,45 @@ python3 tools/check_layer.py
 ```
 
 ### Exploring Commands
-
-<!-- > **Note on Environment Setup:** Commands like `bitbake` and `bitbake-layers` require an initialized build environment. Navigate to your Poky directory and execute `source oe-init-build-env <build_dir>` before running these commands. -->
-> **Note on Environment Setup:** Commands like `bitbake` and `bitbake-layers` require the full Poky environment. If you only want to validate the project structure, use the provided Python script in [Local Validation](#local-validation). If you intend to run full build commands, please proceed to the Real-world Yocto Build Guide [Real-world Yocto Build Guide](#real-world-yocto-build-guide).
-
 Practical commands explored in this sandbox:
 - `bitbake-layers show-layers`: Verify layer parsing.
 - `bitbake -p`: (Planned) Simulate full parsing checks.
 - `bitbake hello`: (Planned) Simulate individual recipe builds.
 
+> **Note on Environment Setup:** Commands like `bitbake` and `bitbake-layers` require an initialized build environment. Navigate to your Poky directory and execute `source oe-init-build-env <build_dir>` before running these commands.
+
 ## Yocto/BitBake Integration
 
-> **Engineering Note:** To orchestrate real-world builds and automated validation for `yocto-lab`, I use [embedded-ci-lab](https://github.com/antoniooreany/embedded-ci-lab) as the CI/CD framework.
+`yocto-lab` acts as the **Target Metadata** for the CI/CD orchestrator [embedded-ci-lab](https://github.com/antoniooreany/embedded-ci-lab).
 
-### Integration Scenarios (Demos)
+### Orchestrated Builds & Validation
+Rather than maintaining duplicate build instructions, the full orchestration logic—including real-world build scenarios, automated artifact verification, and troubleshooting guides—is centralized in the companion project.
 
-By default, the demo expects `yocto-lab` to be in the parent directory. You can override this using the `ARTIFACTS_ROOT` environment variable:
+For detailed instructions on **real-world build execution, CI gating, and system troubleshooting**, please refer to the [Yocto/BitBake Integration](https://github.com/antoniooreany/embedded-ci-lab#yoctobitbake-integration) section in the **embedded-ci-lab** repository.
 
-```bash
-# Run integration pipeline
-ARTIFACTS_ROOT=~/yocto-work/yocto-lab embedded-ci run --pipeline pipelines/integration/yocto_real_build.yaml
+```text
+embedded-ci-lab (Orchestrator)
+      |
+      v
+[Metadata Inspection] <--- [tools/check_layer.py]
+      |                          |
+      v                          v
+[yocto-lab] (Target) <--- [Professional Metadata]
+      |                          |
+      v                          v
+Pass/Fail Status + PR Gating (GitHub Actions)
 ```
-
-### Real-world Yocto Build Guide
-
-While the default integration scenarios use mocked artifacts for portability, you can use this metadata to orchestrate real Yocto builds and verify them in an emulator.
-
-#### Prerequisites & Environment
-1. **Workspace & Repos**: Clone `embedded-ci-lab`, `poky` (branch `scarthgap`), and `yocto-lab`: 
-```bash
-mkdir -p ~/yocto-work && cd ~/yocto-work
-git clone https://github.com/antoniooreany/embedded-ci-lab.git
-git clone https://git.yoctoproject.org/git/poky && cd poky && git checkout scarthgap && cd ..
-git clone https://github.com/antoniooreany/yocto-lab.git
-```
-2. **Dependencies**: Install required system packages for BitBake:
-```bash 
-sudo apt-get update && sudo apt-get install -y gawk wget git diffstat unzip texinfo gcc build-essential chrpath socat cpio python3 python3-pip python3-pexpect xz-utils debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev pylint xterm python3-subunit mesa-common-dev zstd liblz4-tool
-```  
-3. **Orchestrator Setup**: Create a virtual environment using Python 3.11+:
-```bash
-cd ~/yocto-work/embedded-ci-lab
-python3.12 -m venv .venv
-source .venv/bin/activate
-pip install -e .[dev]
-```
-4. **Permissions**: Make the initialization script executable:
-```bash
-chmod +x pipelines/integration/yocto_init.sh
-```
-
-> **Important Note on Performance:** Always perform BitBake build operations within your native Linux filesystem (e.g., `~/yocto-work/...`). Building on Windows-mounted directories (`/mnt/c/`) will lead to severe performance degradation and permission errors.
-
-#### Infrastructure Recommendations
-- **Storage**: Minimum 100GB of free space. To minimize disk usage, we recommend adding `INHERIT += "rm_work"` to your `local.conf`.
-- **RAM**: Minimum 16GB (32GB recommended for high-performance parallel builds).
-
-#### Manual Build & Deployment
-1.  **Initialize Environment**: Within your Poky directory:
-    ```bash
-    git clone https://git.yoctoproject.org/git/poky && cd poky && git checkout scarthgap
-    source oe-init-build-env
-    ```
-2.  **Add Layer**: Register this layer with BitBake:
-    ```bash
-    bitbake-layers add-layer ~/yocto-work/yocto-lab/meta-yocto-lab
-    ```
-3.  **Configure Image**: Add the following to `conf/local.conf`:
-    ```bitbake
-    <!-- IMAGE_INSTALL:append = " hello" -->
-       echo 'IMAGE_INSTALL:append = " hello"' >> conf/local.conf  
-    ```
-4.  **Execute Build**:
-    ```bash
-    bitbake core-image-minimal
-    ```
-5.  **Run & Verify (QEMU)**: Launch the emulator and run the custom command:
-    ```bash
-    runqemu qemux86-64 nographic
-    # Log in as root, then run:
-    hello
-    # Expected output: Hello, Yocto World!
-    ```
-
-#### Testing & Troubleshooting
-- **Dry-run**: Use `bitbake -n core-image-minimal`. The `-n` flag simulates execution, allowing you to verify parsing and metadata integrity in seconds.
-- **Duration**: The first build will take significant time as it compiles the entire toolchain. Keep the laptop plugged in.
 
 ## Project structure
 
 ```text
 yocto-lab/
-├── .github/workflows/validate.yml
+├── .github/          # CI/CD workflows
+├── meta-yocto-lab/   # Custom Yocto layer metadata
+├── samples/          # Example configurations
+├── tools/            # Validation scripts
 ├── CHANGELOG.md
-├── LICENSE
-├── README.md
-├── .gitignore
-├── meta-yocto-lab/
-│   ├── conf/
-│   │   └── layer.conf
-│   └── recipes-apps/
-│       └── hello/
-│           ├── files/
-│           │   └── hello.sh
-│           └── hello_1.0.bb
-├── samples/
-│   ├── bblayers.conf
-│   └── local.conf
-└── tools/
-    └── check_layer.py
+└── README.md
 ```
 
 ## Engineering Decisions
