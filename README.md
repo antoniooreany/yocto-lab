@@ -74,7 +74,7 @@ By default, the demo expects `yocto-lab` to be in the parent directory. You can 
 
 ```bash
 # Run integration pipeline
-ARTIFACTS_ROOT=~/yocto-work/poky/yocto-lab embedded-ci run --pipeline pipelines/full-yocto-integration.yaml
+ARTIFACTS_ROOT=~/yocto-work/poky/yocto-lab embedded-ci run --pipeline pipelines/integration/yocto_real_build.yaml
 ```
 
 ### Real-world Yocto Build Guide
