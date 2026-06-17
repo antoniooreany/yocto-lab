@@ -151,35 +151,6 @@
    - **Storage**: Minimum 100GB of free space. To minimize disk usage, we recommend adding `INHERIT += "rm_work"` to your `local.conf`.
    - **RAM**: Minimum 16GB (32GB recommended for high-performance parallel builds).
 
-   #### Manual Build & Deployment
-   1.  **Initialize Environment**: Within your Poky directory:
-       ```bash
-       source ~/yocto-work/poky/oe-init-build-env
-       ```
-   2.  **Add Layer**: Register this layer with BitBake:
-       ```bash
-       bitbake-layers add-layer ~/yocto-work/yocto-lab/meta-yocto-lab
-       ```
-   3.  **Configure Image**: Add the following to `conf/local.conf`:
-       ```bitbake
-       echo 'IMAGE_INSTALL:append = " hello"' >> conf/local.conf
-       ```
-   4.  **Execute Build**:
-       ```bash
-       bitbake core-image-minimal
-       ```
-   5.  **Run & Verify (QEMU)**: Launch the emulator and run the custom command:
-       ```bash
-       runqemu qemux86-64 nographic
-       # Log in as root, then run:
-       hello
-       # Expected output: Hello, Yocto World!
-       ```
-
-   #### Testing & Troubleshooting
-   - **Dry-run**: Use `bitbake -n core-image-minimal`. The `-n` flag simulates execution, allowing you to verify parsing and metadata integrity in
-   seconds.
-   - **Duration**: The first build will take significant time as it compiles the entire toolchain. Keep the laptop plugged in.
 
    ## Project structure
 
