@@ -82,8 +82,7 @@
 
    ## Usage
 
-   <!-- ### Local Validation {#local-validation} -->
-   <!-- <a name="local-validation"></a> -->
+
    ### Local Validation
    Run the lightweight Python inspector to verify the layer structure:
    ```bash
@@ -92,8 +91,7 @@
 
    ### Exploring Commands
 
-   <!-- > **Note on Environment Setup:** Commands like `bitbake` and `bitbake-layers` require an initialized build environment. Navigate to your
-   Poky directory and execute `source oe-init-build-env <build_dir>` before running these commands. -->
+
    > **Note on Environment Setup:** Commands like `bitbake` and `bitbake-layers` require the full Poky environment. If you only want to validate
    the project structure, use the provided Python script in [Local Validation](#local-validation). If you intend to run full build commands, please
    proceed to the Real-world Yocto Build Guide [Real-world Yocto Build Guide](#real-world-yocto-build-guide).
@@ -156,8 +154,6 @@
    #### Manual Build & Deployment
    1.  **Initialize Environment**: Within your Poky directory:
        ```bash
-       <!-- cd ~/yocto-work/poky -->
-       <!-- source oe-init-build-env -->
        source ~/yocto-work/poky/oe-init-build-env
        ```
    2.  **Add Layer**: Register this layer with BitBake:
@@ -166,7 +162,6 @@
        ```
    3.  **Configure Image**: Add the following to `conf/local.conf`:
        ```bitbake
-       <!-- echo IMAGE_INSTALL:append = " hello" -->
        echo 'IMAGE_INSTALL:append = " hello"' >> conf/local.conf
        ```
    4.  **Execute Build**:
