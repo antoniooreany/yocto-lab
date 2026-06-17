@@ -14,7 +14,6 @@
    - [Features](#features)
    - [Getting Started](#getting-started)
    - [Usage](#usage)
-   - [Yocto/BitBake Integration](#yoctobitbake-integration)
    - [Project structure](#project-structure)
    - [Engineering Decisions](#engineering-decisions)
    - [Future Work](#future-work)
@@ -80,32 +79,10 @@
 
    ## Usage
 
-
-   ### Local Validation
-   Run the lightweight Python inspector to verify the layer structure:
-   ```bash
-   python3 tools/check_layer.py
-   ```
-
-   ### Exploring Commands
-
-
-   > **Note on Environment Setup:** Commands like `bitbake` and `bitbake-layers` require the full Poky environment. If you only want to validate
-   the project structure, use the provided Python script in [Local Validation](#local-validation). If you intend to run full build commands, please
-   proceed to the Real-world Yocto Build Guide [Real-world Yocto Build Guide](#real-world-yocto-build-guide).
-
-   Practical commands explored in this sandbox:
-   - `bitbake-layers show-layers`: Verify layer parsing.
-   - `bitbake -p`: (Planned) Simulate full parsing checks.
-   - `bitbake hello`: (Planned) Simulate individual recipe builds.
-
-
-   ## Yocto/BitBake Integration
-
    > **Engineering Note:** To orchestrate real-world builds and automated validation for `yocto-lab`, I use
    [embedded-ci-lab](https://github.com/antoniooreany/embedded-ci-lab) as the CI/CD framework.
 
-  See https://github.com/antoniooreany/embedded-ci-lab/tree/main#yoctobitbake-integration
+  You can view the detailed user instructions here: https://github.com/antoniooreany/embedded-ci-lab/tree/main#yoctobitbake-integration
 
 
    ## Project structure
