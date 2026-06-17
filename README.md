@@ -14,6 +14,8 @@
 - [Getting Started](#getting-started)
 - [Usage](#usage)
 - [Yocto/BitBake Integration](#yoctobitbake-integration)
+  - [Integration Scenarios (Demos)](#integration-scenarios-demos)
+  - [Real-world Yocto Build Guide](#real-world-yocto-build-guide)
 - [Project structure](#project-structure)
 - [Engineering Decisions](#engineering-decisions)
 - [Future Work](#future-work)
@@ -28,7 +30,7 @@ This ecosystem highlights my experience with both CI/CD tooling and build system
 - **embedded-ci-lab**: Python-based framework for reliable CI automation, observability, and resource-aware execution.
 - **yocto-lab** (this repo): Proof-of-contact with BitBake/Yocto metadata, featuring a professional layer structure, recipes, and build configurations.
 
-**Integration**: `embedded-ci-lab` uses the `yocto_validate_artifacts` step to perform automated "Sanity Checks" on Yocto metadata. While `yocto-lab` is provided as a learning sandbox, the integration framework is fully environment-agnostic.
+**Integration**: `embedded-ci-lab` uses the `yocto_validate_artifacts` step to perform automated "Sanity Checks" on Yocto metadata. While `yocto-lab` is provided as a learning sandbox, the integration framework is fully environment-agnostic. You can validate any Yocto-compatible directory structure by configuring the `artifacts_root` in your pipeline definition or via environment variables (e.g., `${ARTIFACTS_ROOT}`).
 
 ## Portfolio Highlights
 
@@ -83,29 +85,56 @@ Practical commands explored in this sandbox:
 - `bitbake -p`: (Planned) Simulate full parsing checks.
 - `bitbake hello`: (Planned) Simulate individual recipe builds.
 
+## Yocto/BitBake Integration
+
+### Integration Scenarios (Demos)
+
+By default, the demo expects `yocto-lab` to be in the parent directory. You can override this using the `ARTIFACTS_ROOT` environment variable:
+
+```bash
+# Run integration pipeline
+ARTIFACTS_ROOT=~/yocto-work/poky/yocto-lab embedded-ci run --pipeline pipelines/full-yocto-integration.yaml
+```
+
+### Real-world Yocto Build Guide
+
+While the default integration scenarios use mocked artifacts for portability, you can use this metadata to orchestrate real Yocto builds and verify them in an emulator.
+
 > **Note on Environment Setup:** Commands like `bitbake` and `bitbake-layers` require an initialized build environment. Navigate to your Poky directory and execute `source oe-init-build-env <build_dir>` before running these commands.
 
 ## Yocto/BitBake Integration
 
 `yocto-lab` acts as the **Target Metadata** for the CI/CD orchestrator [embedded-ci-lab](https://github.com/antoniooreany/embedded-ci-lab).
 
-### Orchestrated Builds & Validation
-Rather than maintaining duplicate build instructions, the full orchestration logic—including real-world build scenarios, automated artifact verification, and troubleshooting guides—is centralized in the companion project.
+#### Manual Build & Deployment
+1.  **Initialize Environment**: Within your Poky directory:
+    ```bash
+    source oe-init-build-env
+    ```
+2.  **Add Layer**: Register this layer with BitBake:
+    ```bash
+    bitbake-layers add-layer path/to/yocto-lab/meta-yocto-lab
+    ```
+3.  **Configure Image**: Add the following to `conf/local.conf`:
+    ```bitbake
+    IMAGE_INSTALL:append = " hello"
+    ```
+4.  **Execute Build**:
+    ```bash
+    bitbake core-image-minimal
+    ```
+5.  **Run & Verify (QEMU)**: Launch the emulator and run the custom command:
+    ```bash
+    runqemu qemux86-64 nographic
+    # Log in as root, then run:
+    hello
+    # Expected output: Hello, Yocto World!
+    ```
 
-For detailed instructions on **real-world build execution, CI gating, and system troubleshooting**, please refer to the [Yocto/BitBake Integration](https://github.com/antoniooreany/embedded-ci-lab#yoctobitbake-integration) section in the **embedded-ci-lab** repository.
-
-```text
-embedded-ci-lab (Orchestrator)
-      |
-      v
-[Metadata Inspection] <--- [tools/check_layer.py]
-      |                          |
-      v                          v
-[yocto-lab] (Target) <--- [Professional Metadata]
-      |                          |
-      v                          v
-Pass/Fail Status + PR Gating (GitHub Actions)
-```
+#### Testing & Troubleshooting
+To verify your setup without waiting for a full build:
+- **Dry-run**: Use `bitbake -n core-image-minimal`. The `-n` flag simulates execution, allowing you to verify parsing and metadata integrity in seconds.
+- **Duration**: The first build will take significant time as it compiles the entire toolchain. Keep the laptop plugged in.
 
 ## Project structure
 
@@ -121,7 +150,7 @@ yocto-lab/
 
 ## Engineering Decisions
 
-- **Naming Conventions**: Transitioned from `meta-example` to `meta-yocto-lab` to mirror industry-standard naming.
+- **Naming Conventions**: Transitioned from `meta-example` to `meta-yocto-lab` to mirror industry-standard naming (like `meta-intel` or `meta-bmw`).
 - **Semantic Versioning**: Strict adherence to SemVer and [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/) for project history.
 - **Minimalism**: Intentionally kept small to focus on structural integrity rather than build times.
 
