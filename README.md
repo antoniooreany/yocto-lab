@@ -15,8 +15,6 @@
    - [Getting Started](#getting-started)
    - [Usage](#usage)
    - [Yocto/BitBake Integration](#yoctobitbake-integration)
-     - [Integration Scenarios (Demos)](#integration-scenarios-demos)
-     - [Real-world Yocto Build Guide](#real-world-yocto-build-guide)
    - [Project structure](#project-structure)
    - [Engineering Decisions](#engineering-decisions)
    - [Future Work](#future-work)
@@ -101,55 +99,13 @@
    - `bitbake -p`: (Planned) Simulate full parsing checks.
    - `bitbake hello`: (Planned) Simulate individual recipe builds.
 
+
    ## Yocto/BitBake Integration
 
    > **Engineering Note:** To orchestrate real-world builds and automated validation for `yocto-lab`, I use
    [embedded-ci-lab](https://github.com/antoniooreany/embedded-ci-lab) as the CI/CD framework.
 
-   ### Integration Scenarios (Demos)
-
-   By default, the demo expects `yocto-lab` to be in the parent directory. You can override this using the `ARTIFACTS_ROOT` environment variable:
-
-   ```bash
-   # Run integration pipeline
-   ARTIFACTS_ROOT=~/yocto-work/poky/yocto-lab embedded-ci run --pipeline pipelines/integration/yocto_real_build.yaml
-   ```
-
-   ### Real-world Yocto Build Guide
-
-   While the default integration scenarios use mocked artifacts for portability, you can use this metadata to orchestrate real Yocto builds and
-   verify them in an emulator.
-
-   #### Prerequisites & Environment
-   1. **Workspace & Repos**: Clone `embedded-ci-lab`, `poky` (branch `scarthgap`), and `yocto-lab`:
-   ```bash
-   mkdir -p ~/yocto-work && cd ~/yocto-work
-   git clone https://github.com/antoniooreany/embedded-ci-lab.git
-   git clone https://git.yoctoproject.org/git/poky && cd poky && git checkout scarthgap && cd ..
-   git clone https://github.com/antoniooreany/yocto-lab.git
-   ```
-   2. **Dependencies**: Install required system packages for BitBake:
-   ```bash
-   sudo apt-get update && sudo apt-get install -y gawk wget git diffstat unzip texinfo gcc build-essential chrpath socat cpio python3 python3-pip python3-pexpect xz-utils debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev pylint xterm python3-subunit mesa-common-dev zstd liblz4-tool
-   ```
-   3. **Orchestrator Setup**: Create a virtual environment using Python 3.11+:
-   ```bash
-   cd ~/yocto-work/embedded-ci-lab
-   python3.12 -m venv .venv
-   source .venv/bin/activate
-   pip install -e .[dev]
-   ```
-   4. **Permissions**: Make the initialization script executable:
-   ```bash
-   chmod +x pipelines/integration/yocto_init.sh
-   ```
-
-   > **Important Note on Performance:** Always perform BitBake build operations within your native Linux filesystem (e.g., `~/yocto-work/...`).
-   Building on Windows-mounted directories (`/mnt/c/`) will lead to severe performance degradation and permission errors.
-
-   #### Infrastructure Recommendations
-   - **Storage**: Minimum 100GB of free space. To minimize disk usage, we recommend adding `INHERIT += "rm_work"` to your `local.conf`.
-   - **RAM**: Minimum 16GB (32GB recommended for high-performance parallel builds).
+  See https://github.com/antoniooreany/embedded-ci-lab/tree/main#yoctobitbake-integration
 
 
    ## Project structure
