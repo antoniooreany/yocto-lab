@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.2] - 2026-06-15
+
+### Changed
+- **Documentation Architectural Refactor:** Streamlined `README.md` by consolidating orchestration and manual build instructions into the companion `embedded-ci-lab` repository. This establishes `yocto-lab` as a dedicated metadata sandbox, adhering to a "single source of truth" for operational guidance.
+- **Improved Ecosystem Synergy:** Added direct, contextual links to the unified Yocto/BitBake Integration guide, ensuring a seamless user experience across portfolio projects.
+- **UI/UX Polish:** Simplified the README navigation and project structure visualization for better scannability by technical recruiters.
+
 ## [0.4.1] - 2026-06-15
 
 ### Fixed
