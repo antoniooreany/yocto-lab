@@ -35,15 +35,9 @@
    ## Getting Started
 
    ### Prerequisites
-   - Python 3.10+
-   - Basic understanding of BitBake (optional)
-
-   ### Installation
-   ```bash
-   mkdir ~/yocto-work && cd ~/yocto-work
-   git clone https://github.com/antoniooreany/yocto-lab.git
-   cd yocto-lab
-   ```
+    - Python 3.10+
+    - Make (optional, for convenience targets)
+    - Basic understanding of BitBake (optional)
 
    ## Usage
 
