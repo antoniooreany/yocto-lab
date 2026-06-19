@@ -8,31 +8,13 @@
    configurations.
 
    ## Table of Contents
-   - [Yocto/BitBake Integration Ecosystem](#yoctobitbake-integration-ecosystem)
    - [Portfolio Highlights](#portfolio-highlights)
-   - [Motivation](#motivation)
-   - [Features](#features)
    - [Getting Started](#getting-started)
    - [Usage](#usage)
+   - [Yocto/BitBake Integration Ecosystem](#yoctobitbake-integration-ecosystem)
    - [Project structure](#project-structure)
    - [Engineering Decisions](#engineering-decisions)
    - [Future Work](#future-work)
-   - [License](#license)
-
-   ## Yocto/BitBake Integration Ecosystem
-
-   > **Engineering Note:** To demonstrate how [embedded-ci-lab](https://github.com/antoniooreany/embedded-ci-lab) manages real-world build
-   metadata, I developed this companion repository, `yocto-lab`, which serves as a hands-on domain-learning sandbox.
-
-   This ecosystem highlights my experience with both CI/CD tooling and build system internals:
-
-   - **embedded-ci-lab**: Python-based framework for reliable CI automation, observability, and resource-aware execution.
-   - **yocto-lab** (this repo): Proof-of-contact with BitBake/Yocto metadata, featuring a professional layer structure, recipes, and build
-   configurations.
-
-   **Integration**: `embedded-ci-lab` uses the `yocto_validate_artifacts` step to perform automated "Sanity Checks" on Yocto metadata. While
-   `yocto-lab` is provided as a learning sandbox, the integration framework is fully environment-agnostic. You can validate any Yocto-compatible
-   directory structure by configuring the `artifacts_root` in your pipeline definition or via environment variables (e.g., `${ARTIFACTS_ROOT}`).
 
    ## Portfolio Highlights
 
@@ -49,40 +31,29 @@
    - **Tooling Integration**: Creating Python-based inspection tools (`check_layer.py`) to bridge the gap between build systems and CI runners.
    - **Quality Assurance**: Automated validation via GitHub Actions.
 
-   ## Motivation
-
-   Modern embedded/automotive development (e.g., at BMW) relies on hundreds of layers and thousands of recipes. Understanding how to structure,
-   version, and validate this metadata is critical. `yocto-lab` was created to explore these patterns in a controlled, minimalist environment.
-
-   ## Features
-   - **Professional Layer Structure**: Follows Yocto standards with `meta-yocto-lab`.
-   - **Application-Layer Focused Recipes**: Organized under `recipes-apps`.
-   - **Versioned Metadata**: Demonstrates standard naming (`hello_1.0.bb`).
-   - **Sample Configurations**: Pre-configured `samples/` for `local.conf` and `bblayers.conf`.
-   - **Automated Validation**:
-     - Local Python-based structure checker (`tools/check_layer.py`).
-     - GitHub Actions CI for immediate feedback.
-   - **Project Hygiene**: MIT Licensed, Yocto-specific `.gitignore`, and detailed `CHANGELOG.md`.
 
    ## Getting Started
 
    ### Prerequisites
-   - Python 3.10+
-   - Basic understanding of BitBake (optional)
-
-   ### Installation
-   ```bash
-   mkdir ~/yocto-work && cd ~/yocto-work
-   git clone https://github.com/antoniooreany/yocto-lab.git
-   cd yocto-lab
-   ```
+    - Python 3.10+
+    - Make (optional, for convenience targets)
+    - Basic understanding of BitBake (optional)
 
    ## Usage
 
    > **Engineering Note:** To orchestrate real-world builds and automated validation for `yocto-lab`, I use
    [embedded-ci-lab](https://github.com/antoniooreany/embedded-ci-lab) as the CI/CD framework.
 
-  You can view the detailed user instructions here: https://github.com/antoniooreany/embedded-ci-lab/tree/main#yoctobitbake-integration
+   You can view the detailed Usage instructions here: https://github.com/antoniooreany/embedded-ci-lab/#usage
+
+
+
+   ## Yocto/BitBake Integration Ecosystem
+
+   > **Engineering Note:** To demonstrate how [embedded-ci-lab](https://github.com/antoniooreany/embedded-ci-lab) manages real-world build
+   metadata, I developed this companion repository, `yocto-lab`, which serves as a hands-on domain-learning sandbox.
+
+   You can view the detailed Yocto/BitBake Integration Ecosystem instructions here: https://github.com/antoniooreany/embedded-ci-lab/#yoctobitbake-integration-ecosystem
 
 
    ## Project structure
@@ -96,17 +67,11 @@
    ├── .gitignore
    ├── meta-yocto-lab/
    │   ├── conf/
-   │   │   └── layer.conf
    │   └── recipes-apps/
    │       └── hello/
-   │           ├── files/
-   │           │   └── hello.sh
-   │           └── hello_1.0.bb
+   │           └── files/
    ├── samples/
-   │   ├── bblayers.conf
-   │   └── local.conf
    └── tools/
-       └── check_layer.py
    ```
 
    ## Engineering Decisions
